@@ -1,4 +1,4 @@
-/*    
+/*
 	AC101 - An AC101 Codec driver library for Arduino
 	Copyright (C) 2019, Ivo Pullens, Emmission
 
@@ -81,58 +81,58 @@
 #define ARRAY_SIZE(x)  (sizeof(x)/sizeof(x[0]))
 
 const uint8_t regs[] = {
-     CHIP_AUDIO_RS		,
-     PLL_CTRL1			,
-     PLL_CTRL2			,
-     SYSCLK_CTRL		,
-     MOD_CLK_ENA		,
-     MOD_RST_CTRL		,
-     I2S_SR_CTRL		,
-     I2S1LCK_CTRL		,
-     I2S1_SDOUT_CTRL	,
-     I2S1_SDIN_CTRL		,
-     I2S1_MXR_SRC		,
-     I2S1_VOL_CTRL1		,
-     I2S1_VOL_CTRL2		,
-     I2S1_VOL_CTRL3		,
-     I2S1_VOL_CTRL4		,
-     I2S1_MXR_GAIN		,
-     ADC_DIG_CTRL		,
-     ADC_VOL_CTRL		,
-     HMIC_CTRL1			,
-     HMIC_CTRL2			,
-     HMIC_STATUS		,
-     DAC_DIG_CTRL		,
-     DAC_VOL_CTRL		,
-     DAC_MXR_SRC		,
-     DAC_MXR_GAIN		,
-     ADC_APC_CTRL		,
-     ADC_SRC			,
-     ADC_SRCBST_CTRL	,
-     OMIXER_DACA_CTRL	,
-     OMIXER_SR			,
-     OMIXER_BST1_CTRL	,
-     HPOUT_CTRL			,
-     SPKOUT_CTRL		,
-     AC_DAC_DAPCTRL		,
-     AC_DAC_DAPHHPFC 	,
-     AC_DAC_DAPLHPFC 	,
-     AC_DAC_DAPLHAVC 	,
-     AC_DAC_DAPLLAVC 	,
-     AC_DAC_DAPRHAVC 	,
-     AC_DAC_DAPRLAVC 	,
-     AC_DAC_DAPHGDEC 	,
-     AC_DAC_DAPLGDEC 	,
-     AC_DAC_DAPHGATC 	,
-     AC_DAC_DAPLGATC 	,
-     AC_DAC_DAPHETHD 	,
-     AC_DAC_DAPLETHD 	,
-     AC_DAC_DAPHGKPA 	,
-     AC_DAC_DAPLGKPA 	,
-     AC_DAC_DAPHGOPA 	,
-     AC_DAC_DAPLGOPA 	,
-     AC_DAC_DAPOPT   	,
-     DAC_DAP_ENA
+	 CHIP_AUDIO_RS		,
+	 PLL_CTRL1			,
+	 PLL_CTRL2			,
+	 SYSCLK_CTRL		,
+	 MOD_CLK_ENA		,
+	 MOD_RST_CTRL		,
+	 I2S_SR_CTRL		,
+	 I2S1LCK_CTRL		,
+	 I2S1_SDOUT_CTRL	,
+	 I2S1_SDIN_CTRL		,
+	 I2S1_MXR_SRC		,
+	 I2S1_VOL_CTRL1		,
+	 I2S1_VOL_CTRL2		,
+	 I2S1_VOL_CTRL3		,
+	 I2S1_VOL_CTRL4		,
+	 I2S1_MXR_GAIN		,
+	 ADC_DIG_CTRL		,
+	 ADC_VOL_CTRL		,
+	 HMIC_CTRL1			,
+	 HMIC_CTRL2			,
+	 HMIC_STATUS		,
+	 DAC_DIG_CTRL		,
+	 DAC_VOL_CTRL		,
+	 DAC_MXR_SRC		,
+	 DAC_MXR_GAIN		,
+	 ADC_APC_CTRL		,
+	 ADC_SRC			,
+	 ADC_SRCBST_CTRL	,
+	 OMIXER_DACA_CTRL	,
+	 OMIXER_SR			,
+	 OMIXER_BST1_CTRL	,
+	 HPOUT_CTRL			,
+	 SPKOUT_CTRL		,
+	 AC_DAC_DAPCTRL		,
+	 AC_DAC_DAPHHPFC 	,
+	 AC_DAC_DAPLHPFC 	,
+	 AC_DAC_DAPLHAVC 	,
+	 AC_DAC_DAPLLAVC 	,
+	 AC_DAC_DAPRHAVC 	,
+	 AC_DAC_DAPRLAVC 	,
+	 AC_DAC_DAPHGDEC 	,
+	 AC_DAC_DAPLGDEC 	,
+	 AC_DAC_DAPHGATC 	,
+	 AC_DAC_DAPLGATC 	,
+	 AC_DAC_DAPHETHD 	,
+	 AC_DAC_DAPLETHD 	,
+	 AC_DAC_DAPHGKPA 	,
+	 AC_DAC_DAPLGKPA 	,
+	 AC_DAC_DAPHGOPA 	,
+	 AC_DAC_DAPLGOPA 	,
+	 AC_DAC_DAPOPT   	,
+	 DAC_DAP_ENA
 };
 
 bool AC101::WriteReg(uint8_t reg, uint16_t val)
@@ -155,7 +155,7 @@ uint16_t AC101::ReadReg(uint8_t reg)
 	{
 		val = uint16_t(Wire.read() << 8) + uint16_t(Wire.read());
 	}
-    Wire.endTransmission(false);
+	Wire.endTransmission(false);
 
 	return val;
 }
@@ -166,7 +166,7 @@ AC101::AC101()
 
 bool AC101::begin(int sda, int scl, uint32_t frequency)
 {
-    bool ok = Wire.begin(sda, scl, frequency);
+	bool ok = Wire.begin(sda, scl, frequency);
 
 	// Reset all registers, readback default as sanity check
 	ok &= WriteReg(CHIP_AUDIO_RS, 0x123);
@@ -225,7 +225,7 @@ void AC101::DumpRegisters()
 uint8_t AC101::GetVolumeSpeaker()
 {
 	// Times 2, to scale to same range as headphone volume
-    return (ReadReg(SPKOUT_CTRL) & 31) * 2;
+	return (ReadReg(SPKOUT_CTRL) & 31) * 2;
 }
 
 bool AC101::SetVolumeSpeaker(uint8_t volume)
@@ -242,7 +242,7 @@ bool AC101::SetVolumeSpeaker(uint8_t volume)
 
 uint8_t AC101::GetVolumeHeadphone()
 {
-    return (ReadReg(HPOUT_CTRL) >> 4) & 63;
+	return (ReadReg(HPOUT_CTRL) >> 4) & 63;
 }
 
 bool AC101::SetVolumeHeadphone(uint8_t volume)
@@ -298,33 +298,33 @@ bool AC101::SetI2sClock(I2sBitClockDiv_t bitClockDiv, bool bitClockInv, I2sLrClo
 bool AC101::SetMode(Mode_t mode)
 {
 	bool ok = true;
-    if (MODE_LINE == mode)
+	if (MODE_LINE == mode)
 	{
 		ok &= WriteReg(ADC_SRC, 0x0408);
 		ok &= WriteReg(ADC_DIG_CTRL, 0x8000);
 		ok &= WriteReg(ADC_APC_CTRL, 0x3bc0);
-    }
+	}
 
-    if ((MODE_ADC == mode) or (MODE_ADC_DAC == mode) or (MODE_LINE == mode))
+	if ((MODE_ADC == mode) or (MODE_ADC_DAC == mode) or (MODE_LINE == mode))
 	{
-    	ok &= WriteReg(MOD_CLK_ENA,  0x800c);
-    	ok &= WriteReg(MOD_RST_CTRL, 0x800c);
-    }
+		ok &= WriteReg(MOD_CLK_ENA,  0x800c);
+		ok &= WriteReg(MOD_RST_CTRL, 0x800c);
+	}
 
-    if ((MODE_DAC == mode) or (MODE_ADC_DAC == mode) or (MODE_LINE == mode))
+	if ((MODE_DAC == mode) or (MODE_ADC_DAC == mode) or (MODE_LINE == mode))
 	{
-    	// Enable Headphone output
+		// Enable Headphone output
 		ok &= WriteReg(OMIXER_DACA_CTRL, 0xff80);
-    	ok &= WriteReg(HPOUT_CTRL, 0xc3c1);	
-    	ok &= WriteReg(HPOUT_CTRL, 0xcb00);
-    	delay(100);
+		ok &= WriteReg(HPOUT_CTRL, 0xc3c1);	
+		ok &= WriteReg(HPOUT_CTRL, 0xcb00);
+		delay(100);
 		ok &= WriteReg(HPOUT_CTRL, 0xfbc0);
 		ok &= SetVolumeHeadphone(30);
 
-    	// Enable Speaker output
+		// Enable Speaker output
 		ok &= WriteReg(SPKOUT_CTRL, 0xeabd);
-    	delay(10);
+		delay(10);
 		ok &= SetVolumeSpeaker(30);
-    }
+	}
 	return ok;
 }

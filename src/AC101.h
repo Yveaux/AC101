@@ -1,4 +1,4 @@
-/*    
+/*
 	AC101 - An AC101 Codec driver library for Arduino
 	Copyright (C) 2019, Ivo Pullens, Emmission
 
@@ -42,22 +42,22 @@ public:
 	} I2sSampleRate_t;
 
 	typedef enum {
-		MODE_MASTER         = 0x00,
-		MODE_SLAVE          = 0x01,
+		MODE_MASTER			= 0x00,
+		MODE_SLAVE			= 0x01,
 	} I2sMode_t;
 
 	typedef enum {
-		WORD_SIZE_8_BITS    = 0x00,
-		WORD_SIZE_16_BITS   = 0x01,
-		WORD_SIZE_20_BITS   = 0x02,
-		WORD_SIZE_24_BITS   = 0x03,
+		WORD_SIZE_8_BITS	= 0x00,
+		WORD_SIZE_16_BITS	= 0x01,
+		WORD_SIZE_20_BITS	= 0x02,
+		WORD_SIZE_24_BITS	= 0x03,
 	} I2sWordSize_t;
 
 	typedef enum {
-		DATA_FORMAT_I2S     = 0x00,
-		DATA_FORMAT_LEFT    = 0x01,
-		DATA_FORMAT_RIGHT   = 0x02,
-		DATA_FORMAT_DSP     = 0x03,
+		DATA_FORMAT_I2S		= 0x00,
+		DATA_FORMAT_LEFT	= 0x01,
+		DATA_FORMAT_RIGHT	= 0x02,
+		DATA_FORMAT_DSP		= 0x03,
 	} I2sFormat_t;
 
 	typedef enum {
