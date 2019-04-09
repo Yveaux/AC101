@@ -1,9 +1,9 @@
 /*    
 	AC101 Codec driver library example.
-  Uses the ESP32-A1S module with integrated AC101 codec, mounted on the ESP32 Audio Kit board:
-  https://wiki.ai-thinker.com/esp32-audio-kit
+	Uses the ESP32-A1S module with integrated AC101 codec, mounted on the ESP32 Audio Kit board:
+	https://wiki.ai-thinker.com/esp32-audio-kit
 
-  Required library: ESP8266Audio https://github.com/earlephilhower/ESP8266Audio
+	Required library: ESP8266Audio https://github.com/earlephilhower/ESP8266Audio
 
 	Copyright (C) 2019, Ivo Pullens, Emmission
 	
@@ -55,97 +55,97 @@ const uint8_t volume_step = 2;
 
 void setup()
 {
-  Serial.begin(115200);
+	Serial.begin(115200);
 
-  Serial.printf("Connect to AC101 codec... ");
-  while (not ac.begin(IIC_DATA, IIC_CLK))
-  {
-    Serial.printf("Failed!\n");
-    delay(1000);
-  }
-  Serial.printf("OK\n");
+	Serial.printf("Connect to AC101 codec... ");
+	while (not ac.begin(IIC_DATA, IIC_CLK))
+	{
+		Serial.printf("Failed!\n");
+		delay(1000);
+	}
+	Serial.printf("OK\n");
 
 	ac.SetVolumeSpeaker(volume);
 	ac.SetVolumeHeadphone(volume);
 //  ac.DumpRegisters();
 
-  // Enable amplifier
-  pinMode(GPIO_PA_EN, OUTPUT);
-  digitalWrite(GPIO_PA_EN, HIGH);
+	// Enable amplifier
+	pinMode(GPIO_PA_EN, OUTPUT);
+	digitalWrite(GPIO_PA_EN, HIGH);
 
-  // Configure keys on ESP32 Audio Kit board
-  pinMode(PIN_PLAY, INPUT_PULLUP);
-  pinMode(PIN_VOL_UP, INPUT_PULLUP);
-  pinMode(PIN_VOL_DOWN, INPUT_PULLUP);
+	// Configure keys on ESP32 Audio Kit board
+	pinMode(PIN_PLAY, INPUT_PULLUP);
+	pinMode(PIN_VOL_UP, INPUT_PULLUP);
+	pinMode(PIN_VOL_DOWN, INPUT_PULLUP);
 
-  // Create audio source from progmem, enable I2S output,
-  // configure I2S pins to matchn the board and create ringtone generator.
-  file = new AudioFileSourcePROGMEM( song, strlen_P(song) );
-  out = new AudioOutputI2S();
-  out->SetPinout(IIS_SCLK /*bclkPin*/, IIS_LCLK /*wclkPin*/, IIS_DSIN /*doutPin*/);
-  rtttl = new AudioGeneratorRTTTL();
+	// Create audio source from progmem, enable I2S output,
+	// configure I2S pins to matchn the board and create ringtone generator.
+	file = new AudioFileSourcePROGMEM( song, strlen_P(song) );
+	out = new AudioOutputI2S();
+	out->SetPinout(IIS_SCLK /*bclkPin*/, IIS_LCLK /*wclkPin*/, IIS_DSIN /*doutPin*/);
+	rtttl = new AudioGeneratorRTTTL();
 
-  Serial.printf("Use KEY4 to play, KEY5/KEY6 for volume Up/Down\n");
+	Serial.printf("Use KEY4 to play, KEY5/KEY6 for volume Up/Down\n");
 }
 
 bool pressed( const int pin )
 {
-  if (digitalRead(pin) == LOW)
-  {
-    delay(500);
-    return true;
-  }
-  return false;
+	if (digitalRead(pin) == LOW)
+	{
+		delay(500);
+		return true;
+	}
+	return false;
 }
 
 void loop()
 {
-  bool updateVolume = false;
+	bool updateVolume = false;
 
-  if (pressed(PIN_PLAY) and not rtttl->isRunning())
-  {
-    // Start playing
-    file->seek(0, SEEK_SET);
-    rtttl->begin(file, out);
-    updateVolume = true;
-  }
+	if (pressed(PIN_PLAY) and not rtttl->isRunning())
+	{
+		// Start playing
+		file->seek(0, SEEK_SET);
+		rtttl->begin(file, out);
+		updateVolume = true;
+	}
 
-  if (rtttl->isRunning())
-  {
-    if (!rtttl->loop())
-    {
-      rtttl->stop();
-      // Last note seems to loop after stop.
-      // To silence also set volume to 0.
-      ac.SetVolumeSpeaker(0);
-      ac.SetVolumeHeadphone(0);
-    }
-  }
+	if (rtttl->isRunning())
+	{
+		if (!rtttl->loop())
+		{
+			rtttl->stop();
+			// Last note seems to loop after stop.
+			// To silence also set volume to 0.
+			ac.SetVolumeSpeaker(0);
+			ac.SetVolumeHeadphone(0);
+		}
+	}
 
-  if (pressed(PIN_VOL_UP))
-  {
-    if (volume <= (63-volume_step))
-    {
-      // Increase volume
-      volume += volume_step;
-      updateVolume = true;
-    } 
-  }
-  if (pressed(PIN_VOL_DOWN))
-  {
-    if (volume >= volume_step)
-    {
-      // Decrease volume
-      volume -= volume_step;
-      updateVolume = true;
-    } 
-  }
-  if (updateVolume)
-  {
-    // Volume change requested
-    Serial.printf("Volume %d\n", volume);
-    ac.SetVolumeSpeaker(volume);
-    ac.SetVolumeHeadphone(volume);
-  }
+	if (pressed(PIN_VOL_UP))
+	{
+		if (volume <= (63-volume_step))
+		{
+			// Increase volume
+			volume += volume_step;
+			updateVolume = true;
+		} 
+	}
+	if (pressed(PIN_VOL_DOWN))
+	{
+		if (volume >= volume_step)
+		{
+			// Decrease volume
+			volume -= volume_step;
+			updateVolume = true;
+		} 
+	}
+	if (updateVolume)
+	{
+		// Volume change requested
+		Serial.printf("Volume %d\n", volume);
+		ac.SetVolumeSpeaker(volume);
+		ac.SetVolumeHeadphone(volume);
+	}
 }
 
