@@ -250,8 +250,8 @@ bool AC101::SetVolumeHeadphone(uint8_t volume)
 	if (volume > 63) volume = 63;
 
 	uint16_t val = ReadReg(HPOUT_CTRL);
-	val &= ~63;
-	val |= volume;
+	val &= ~63 << 4;
+	val |= volume << 4;
 	return WriteReg(HPOUT_CTRL, val);
 }
 
