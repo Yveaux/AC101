@@ -137,37 +137,35 @@ const uint8_t regs[] = {
 
 bool AC101::WriteReg(uint8_t reg, uint16_t val)
 {
-	Wire.beginTransmission(AC101_ADDR);
-	Wire.write(reg);
-	Wire.write(uint8_t((val >> 8) & 0xff));
-	Wire.write(uint8_t(val & 0xff));
-	return 0 == Wire.endTransmission(true);
+	_TwoWireInstance.beginTransmission(AC101_ADDR);
+	_TwoWireInstance.write(reg);
+	_TwoWireInstance.write(uint8_t((val >> 8) & 0xff));
+	_TwoWireInstance.write(uint8_t(val & 0xff));
+	return 0 == _TwoWireInstance.endTransmission(true);
 }
 
 uint16_t AC101::ReadReg(uint8_t reg)
 {
-	Wire.beginTransmission(AC101_ADDR);
-	Wire.write(reg);
-	Wire.endTransmission(false);
+	_TwoWireInstance.beginTransmission(AC101_ADDR);
+	_TwoWireInstance.write(reg);
+	_TwoWireInstance.endTransmission(false);
 
 	uint16_t val = 0u;
-	if (2 == Wire.requestFrom(uint16_t(AC101_ADDR), uint8_t(2), true))
+	if (2 == _TwoWireInstance.requestFrom(uint16_t(AC101_ADDR), uint8_t(2), true))
 	{
-		val = uint16_t(Wire.read() << 8) + uint16_t(Wire.read());
+		val = uint16_t(_TwoWireInstance.read() << 8) + uint16_t(_TwoWireInstance.read());
 	}
-	Wire.endTransmission(false);
+	_TwoWireInstance.endTransmission(false);
 
 	return val;
 }
 
-AC101::AC101()
+AC101::AC101( TwoWire & TwoWireInstance ) : _TwoWireInstance(TwoWireInstance)
 {
 }
 
-bool AC101::begin(int sda, int scl, uint32_t frequency)
+bool AC101::begin()
 {
-	bool ok = Wire.begin(sda, scl, frequency);
-
 	// Reset all registers, readback default as sanity check
 	ok &= WriteReg(CHIP_AUDIO_RS, 0x123);
 	delay(100);

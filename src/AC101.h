@@ -94,11 +94,11 @@ public:
 	} Mode_t;
 
 	// Constructor.
-  	AC101();
+  	AC101(TwoWire & TwoWireInstance = Wire);
 
 	// Initialize codec, using provided I2C pins and bus frequency.
 	// @return True on success, false on failure.
-	bool begin(int sda = -1, int scl = -1, uint32_t frequency = 400000);
+	bool begin();
 
 	// Get speaker volume.
 	// @return Speaker volume, [63..0] for [0..-43.5] [dB], in increments of 2.
