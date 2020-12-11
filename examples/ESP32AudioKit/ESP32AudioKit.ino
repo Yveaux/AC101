@@ -52,6 +52,7 @@ static AC101 ac;
 
 static uint8_t volume = 5;
 const uint8_t volume_step = 2;
+unsigned long debounce = 0;
 
 void setup()
 {
@@ -90,10 +91,13 @@ void setup()
 
 bool pressed( const int pin )
 {
-	if (digitalRead(pin) == LOW)
+	if (millis() > (debounce + 500))
 	{
-		delay(500);
-		return true;
+	    if (digitalRead(pin) == LOW)
+	    {
+	      debounce = millis();
+	      return true;
+	    }
 	}
 	return false;
 }
