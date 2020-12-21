@@ -23,6 +23,7 @@
 #define AC101_H
 
 #include <inttypes.h>
+#include <Wire.h>
 
 class AC101
 {
@@ -157,6 +158,8 @@ public:
 protected:
 	bool WriteReg(uint8_t reg, uint16_t val);
 	uint16_t ReadReg(uint8_t reg);
+private:
+	TwoWire & _TwoWireInstance;	// TwoWire Instance
 };
 
 #endif

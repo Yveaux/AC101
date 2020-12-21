@@ -25,6 +25,10 @@
 #include "AudioGeneratorRTTTL.h"
 #include "AudioOutputI2S.h"
 #include "AC101.h"
+#include "Wire.h"
+
+TwoWire i2cBusOne = TwoWire(0);
+static AC101 ac(i2cBusOne);
 
 const char song[] PROGMEM = 
 "Batman:d=8,o=5,b=180:d,d,c#,c#,c,c,c#,c#,d,d,c#,c#,c,c,c#,c#,d,d#,c,c#,c,c,c#,c#,f,p,4f";
@@ -48,17 +52,15 @@ AudioOutputI2S *out;
 #define PIN_VOL_UP                  (18)      // KEY 5
 #define PIN_VOL_DOWN                (5)       // KEY 6
 
-static AC101 ac;
-
 static uint8_t volume = 5;
 const uint8_t volume_step = 2;
 
 void setup()
 {
 	Serial.begin(115200);
-
+  i2cBusOne.begin(IIC_DATA, IIC_CLK, 40000);
 	Serial.printf("Connect to AC101 codec... ");
-	while (not ac.begin(IIC_DATA, IIC_CLK))
+	while (not ac.begin())
 	{
 		Serial.printf("Failed!\n");
 		delay(1000);
@@ -148,4 +150,3 @@ void loop()
 		ac.SetVolumeHeadphone(volume);
 	}
 }
-

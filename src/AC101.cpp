@@ -166,6 +166,8 @@ AC101::AC101( TwoWire & TwoWireInstance ) : _TwoWireInstance(TwoWireInstance)
 
 bool AC101::begin()
 {
+	bool ok = true;
+	
 	// Reset all registers, readback default as sanity check
 	ok &= WriteReg(CHIP_AUDIO_RS, 0x123);
 	delay(100);
