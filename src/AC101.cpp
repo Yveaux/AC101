@@ -315,8 +315,6 @@ bool AC101::SetMode(Mode_t mode)
 	{
 		// Enable Headphone output
 		ok &= WriteReg(OMIXER_DACA_CTRL, 0xff80);
-		ok &= WriteReg(HPOUT_CTRL, 0xc3c1);	
-		ok &= WriteReg(HPOUT_CTRL, 0xcb00);
 		delay(100);
 		ok &= WriteReg(HPOUT_CTRL, 0xfbc0);
 		ok &= SetVolumeHeadphone(30);
