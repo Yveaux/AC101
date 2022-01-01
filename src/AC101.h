@@ -23,6 +23,7 @@
 #define AC101_H
 
 #include <inttypes.h>
+#include <Wire.h>
 
 class AC101
 {
@@ -94,11 +95,11 @@ public:
 	} Mode_t;
 
 	// Constructor.
-  	AC101();
+  	AC101(TwoWire *TwoWireInstance = &Wire);
 
 	// Initialize codec, using provided I2C pins and bus frequency.
 	// @return True on success, false on failure.
-	bool begin(int sda = -1, int scl = -1, uint32_t frequency = 400000);
+	bool begin();
 
 	// Get speaker volume.
 	// @return Speaker volume, [63..0] for [0..-43.5] [dB], in increments of 2.
@@ -157,6 +158,8 @@ public:
 protected:
 	bool WriteReg(uint8_t reg, uint16_t val);
 	uint16_t ReadReg(uint8_t reg);
+private:
+	TwoWire *_TwoWireInstance = NULL;	// TwoWire Instance
 };
 
 #endif
